@@ -4,7 +4,7 @@ class Api::V1::OffersController < ApplicationController
 
         render json: offers.to_json(
             :include => {
-                :user => {:only => [:username]},
+                :user => {:except => [:updated_at, :created_at]},
                 :item => {:except => [:updated_at, :created_at]}
              },
             :except => [:updated_at, :created_at])
@@ -18,7 +18,7 @@ class Api::V1::OffersController < ApplicationController
         
         render json: offer.to_json(
             :include => {
-                :user => {:only => [:username]},
+                :user => {:except => [:updated_at, :created_at]},
                 :item => {:except => [:updated_at, :created_at]}
              },
             :except => [:updated_at, :created_at])
@@ -28,7 +28,12 @@ class Api::V1::OffersController < ApplicationController
 
     def create
         offer = Offer.create(offer_params)
-        render json: offer
+        render json: offer.to_json(
+            :include => {
+                :user => {:except => [:updated_at, :created_at]},
+                :item => {:except => [:updated_at, :created_at]}
+             },
+            :except => [:updated_at, :created_at])
     end
       
     def update
@@ -36,15 +41,24 @@ class Api::V1::OffersController < ApplicationController
     
         offer.update(offer_params)
     
-        render json: offer, except: [:updated_at, :created_at]
-    end
+        render json: offer.to_json(
+            :include => {
+                :user => {:except => [:updated_at, :created_at]},
+                :item => {:except => [:updated_at, :created_at]}
+             },
+            :except => [:updated_at, :created_at])    end
     
     def destroy
         offer = Offer.find(params[:id])
     
         offer.destroy
     
-        render json: offer
+        render json: offer.to_json(
+            :include => {
+                :user => {:except => [:updated_at, :created_at]},
+                :item => {:except => [:updated_at, :created_at]}
+             },
+            :except => [:updated_at, :created_at])
     end
     
       private

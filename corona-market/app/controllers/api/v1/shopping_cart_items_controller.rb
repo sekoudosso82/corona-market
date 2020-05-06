@@ -25,7 +25,9 @@ class Api::V1::ShoppingCartItemsController < ApplicationController
     def create
         shoppingCartItem = ShoppingCartItem.create(shoppingCartItem_params)
        
-        render json: shoppingCartItem
+        render json: shoppingCartItem,
+               include: [:shopping_cart, :item],
+               except: [:updated_at, :created_at] 
     end
     # shopping_cart_id = params[:shopping_cart_id], 
     # item_id = params[:item_id]
